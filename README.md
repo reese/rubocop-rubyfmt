@@ -1,4 +1,4 @@
-# RuboCop::Rubyfmt
+# `rubocop-rubyfmt`
 
 [`rubyfmt`](https://github.com/fables-tales/rubyfmt)-compliant Rubocop configuration.
 
@@ -13,7 +13,7 @@ bundle add rubocop-rubyfmt
 If bundler is not being used to manage dependencies, install the gem by executing:
 
 ```bash
-gem install UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+gem install rubocop-rubyfmt
 ```
 
 ## Usage
