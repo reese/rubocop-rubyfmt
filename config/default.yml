@@ -1,0 +1,4 @@
+Style/EndOfRubocopDisables:
+  Description: 'Prevents end-of-line disable comments. `rubyfmt` only supports comments on their own line.'
+  Enabled: true
+  VersionAdded: '0.1.0'
