@@ -7,6 +7,9 @@
 # to also have Rubocop check those and have conflicting errors reported in the
 # editor or at the command line.
 
+plugins:
+  - rubocop-rubyfmt
+
 # `rubyfmt` is intended to supercede any and all other formatting
 # styles, so we just disable this entire group.
 Layout:
