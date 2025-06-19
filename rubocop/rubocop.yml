@@ -9,7 +9,7 @@
 
 # `rubyfmt` is intended to supercede any and all other formatting
 # styles, so we just disable this entire group.
-Format:
+Layout:
   Enabled: false
 
 # `rubyfmt` always double-quotes strings
