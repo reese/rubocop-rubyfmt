@@ -3,6 +3,28 @@ plugins:
   - rubocop-internal_affairs
   - rubocop-rubyfmt
 
+AllCops:
+  Exclude:
+  <% `git status --ignored --porcelain`.lines.grep(/^!! /).each do |path| %>
+    - <%= path.sub(/^!! /, '').sub(/\/$/, '/**/*') %>
+  <% end %>
+
 Naming/FileName:
   Exclude:
     - lib/rubocop-rubyfmt.rb
+
+Metrics/AbcSize:
+  Enabled: false
+Metrics/BlockLength:
+  Enabled: false
+Metrics/ClassLength:
+  Enabled: false
+Metrics/CyclomaticComplexity:
+  Enabled: false
+Metrics/MethodLength:
+  Enabled: false
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+Style/IfUnlessModifier:
+  Enabled: false

@@ -1,0 +1,79 @@
+# Corpus of Ruby repositories for analyzing rubyfmt/rubocop interactions
+#
+# Each repo is pinned to a specific ref for reproducibility.
+# `paths` limits analysis to specific directories (useful for monorepos).
+
+rubyfmt:
+  # Pin the rubyfmt version for reproducible analysis
+  # Download from: https://github.com/fables-tales/rubyfmt/releases
+  version: "v0.11.228-0"
+  binary: null  # Set to path if you have a local binary, otherwise downloads release
+
+repos:
+  - name: rails
+    url: https://github.com/rails/rails
+    ref: v8.1.1
+    paths:
+      - activerecord/lib
+      - activesupport/lib
+      - actionpack/lib
+  - name: discourse
+    url: https://github.com/discourse/discourse
+    ref: v2025.12.0
+    paths:
+      - app
+      - lib
+  - name: mastodon
+    url: https://github.com/mastodon/mastodon
+    ref: v4.5.3
+    paths:
+      - app
+      - lib
+  - name: sidekiq
+    url: https://github.com/sidekiq/sidekiq
+    ref: v8.1.0
+    paths:
+      - lib
+  - name: faker
+    url: https://github.com/faker-ruby/faker
+    ref: v3.5.3
+    paths:
+      - lib
+  - name: rubocop
+    url: https://github.com/rubocop/rubocop
+    ref: v1.82.1
+    paths:
+      - lib
+  - name: jekyll
+    url: https://github.com/jekyll/jekyll
+    ref: v4.4.1
+    paths:
+      - lib
+  - name: liquid
+    url: https://github.com/Shopify/liquid
+    ref: v5.11.0
+    paths:
+      - lib
+  - name: gitlab
+    url: https://github.com/gitlabhq/gitlabhq
+    ref: v17.6.0
+    paths:
+      - lib
+      - app/models
+      - app/services
+  - name: homebrew
+    url: https://github.com/Homebrew/brew
+    ref: 4.4.0
+    paths:
+      - Library/Homebrew
+  - name: rspec-core
+    url: https://github.com/rspec/rspec-core
+    ref: v3.13.0
+    paths:
+      - lib
+  - name: solidus
+    url: https://github.com/solidusio/solidus
+    ref: v4.6.2
+    paths:
+      - core/lib
+      - core/app

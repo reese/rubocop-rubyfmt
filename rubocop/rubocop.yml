@@ -1,7 +1,7 @@
 # rubyfmt-compliant Rubocop config.
 #
 # This file generally opts to simply disable cops
-# instead of setting them to come kind of compliant configuration setting.
+# instead of setting them to some kind of compliant configuration setting.
 # This is to avoid having multiple tools enforcing the same thing -- rubyfmt
 # can check the formatting itself using the `--check` param, so there's no need
 # to also have Rubocop check those and have conflicting errors reported in the
@@ -18,4 +18,3 @@ Layout:
 # `rubyfmt` always double-quotes strings
 Style/StringLiterals:
   Enabled: false
-
