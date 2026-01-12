@@ -108,14 +108,20 @@ module RubyfmtAnalysis
       repo_dir = clone_or_update_repo(repo)
       work_copy = prepare_work_copy(repo, repo_dir)
 
-      puts("  Running RuboCop (before rubyfmt)...")
-      before = run_rubocop(work_copy, repo["paths"])
+      puts("  Installing dependencies...")
+      install_dependencies(work_copy)
+
+      puts("  Running RuboCop (before rubyfmt, using repo config)...")
+      before = run_rubocop(work_copy, repo["paths"], mode: :before)
+
+      puts("  Running NoEndOfLineRubocopDisables autocorrect...")
+      run_disable_autocorrect(work_copy, repo["paths"])
 
       puts("  Running rubyfmt...")
       formatted_files = run_rubyfmt(work_copy, repo["paths"])
 
-      puts("  Running RuboCop (after rubyfmt)...")
-      after = run_rubocop(work_copy, repo["paths"])
+      puts("  Running RuboCop (after rubyfmt, with rubocop-rubyfmt)...")
+      after = run_rubocop(work_copy, repo["paths"], mode: :after)
 
       diff = diff_violations(before, after)
 
@@ -135,7 +141,7 @@ module RubyfmtAnalysis
       if Dir.exist?(repo_dir)
         puts("  Using cached repo, checking out #{repo['ref']}...")
         Dir.chdir(repo_dir) do
-          system("git", "fetch", "--tags", exception: true)
+          system("git", "fetch", "--tags", "--force", exception: true)
           system("git", "checkout", repo["ref"], exception: true)
           system("git", "clean", "-fdx", exception: true)
         end
@@ -157,30 +163,97 @@ module RubyfmtAnalysis
       File.join(work_dir, File.basename(repo_dir))
     end
 
-    def run_rubocop(dir, paths)
-      target_paths = paths.map { |p| File.join(dir, p) }.select { |p| Dir.exist?(p) }
-      return [] if target_paths.empty?
+    def install_dependencies(dir)
+      return unless File.exist?(File.join(dir, "Gemfile"))
 
-      cmd = [
-        "rubocop",
-        "--format",
-        "json",
-        # Ignore repo's .rubocop.yml
-        "--force-default-config",
-        "--only-recognized-file-types",
-        *target_paths
-      ]
+      # Path to rubocop-rubyfmt gem (this project's root)
+      rubyfmt_gem_path = File.expand_path("../..", __dir__)
 
-      stdout, stderr, _status = Open3.capture3(*cmd)
+      Dir.chdir(dir) do
+        # Add rubocop-rubyfmt to the Gemfile for the "after" analysis
+        gemfile_content = File.read("Gemfile")
+        unless gemfile_content.include?("rubocop-rubyfmt")
+          File.open("Gemfile", "a") do |f|
+            f.puts("\n# Added by rubocop-rubyfmt analysis")
+            f.puts("gem \"rubocop-rubyfmt\", path: \"#{rubyfmt_gem_path}\"")
+          end
+        end
 
-      begin
-        result = JSON.parse(stdout)
-        parse_violations(result, dir)
-      rescue JSON::ParserError => e
-        puts("    Warning: RuboCop JSON parse error: #{e.message}")
-        puts("    stderr: #{stderr}") unless stderr.empty?
-        []
+        # Install dependencies (including rubocop plugins the repo uses)
+        _stdout, stderr, status = Open3.capture3(
+          "bundle", "install", "--jobs=4", "--quiet"
+        )
+        puts("    Warning: bundle install had issues: #{stderr}") if !status.success? && !stderr.empty?
       end
+    end
+
+    def run_disable_autocorrect(dir, paths)
+      # Use relative paths from within the repo directory
+      relative_paths = paths.select { |p| Dir.exist?(File.join(dir, p)) }
+      return if relative_paths.empty?
+
+      Dir.chdir(dir) do
+        # Run rubocop with autocorrect for the NoEndOfLineRubocopDisables cop
+        # This converts end-of-line disables to multiline before rubyfmt runs
+        cmd = [
+          "bundle", "exec", "rubocop",
+          "--autocorrect",
+          "--only", "Rubyfmt/NoEndOfLineRubocopDisables",
+          *relative_paths
+        ]
+
+        _stdout, stderr, status = Open3.capture3(*cmd)
+        puts("    Warning: autocorrect had issues: #{stderr}") if !status.success? && !stderr.empty?
+      end
+    end
+
+    def run_rubocop(dir, paths, mode:)
+      # Use relative paths from within the repo directory
+      relative_paths = paths.select { |p| Dir.exist?(File.join(dir, p)) }
+      return [] if relative_paths.empty?
+
+      Dir.chdir(dir) do
+        cmd = build_rubocop_cmd(relative_paths, mode)
+        stdout, stderr, _status = Open3.capture3(*cmd)
+
+        begin
+          result = JSON.parse(stdout)
+          parse_violations(result, dir)
+        rescue JSON::ParserError => e
+          puts("    Warning: RuboCop JSON parse error: #{e.message}")
+          puts("    stderr: #{stderr}") unless stderr.empty?
+          []
+        end
+      end
+    end
+
+    def build_rubocop_cmd(target_paths, mode)
+      base_cmd = ["bundle", "exec", "rubocop", "--format", "json", "--only-recognized-file-types"]
+
+      case mode
+      when :before
+        # Use repo's own .rubocop.yml if it exists
+        if File.exist?(".rubocop.yml")
+          base_cmd + [*target_paths]
+        else
+          base_cmd + ["--force-default-config", *target_paths]
+        end
+      when :after
+        # Use repo's config + rubocop-rubyfmt plugin
+        config_path = create_after_config
+        base_cmd + ["--config", config_path, *target_paths]
+      end
+    end
+
+    def create_after_config
+      # Create a temporary config that inherits from repo's config and loads rubocop-rubyfmt
+      config_path = ".rubocop-analysis.yml"
+
+      config = { "plugins" => ["rubocop-rubyfmt"] }
+      config["inherit_from"] = ".rubocop.yml" if File.exist?(".rubocop.yml")
+
+      File.write(config_path, YAML.dump(config))
+      config_path
     end
 
     def parse_violations(rubocop_json, base_dir)

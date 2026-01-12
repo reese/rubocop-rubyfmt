@@ -6,7 +6,7 @@
 rubyfmt:
   # Pin the rubyfmt version for reproducible analysis
   # Download from: https://github.com/fables-tales/rubyfmt/releases
-  version: "v0.11.228-0"
+  version: "v0.11.249-0"
   binary: null  # Set to path if you have a local binary, otherwise downloads release
 
 repos:
