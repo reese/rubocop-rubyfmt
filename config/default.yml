@@ -1,4 +1,15 @@
-Style/EndOfRubocopDisables:
+# Custom cops provided by rubocop-rubyfmt
+Rubyfmt/NoEndOfLineRubocopDisables:
   Description: 'Prevents end-of-line disable comments. `rubyfmt` only supports comments on their own line.'
   Enabled: true
   VersionAdded: '0.1.0'
+
+# Cops disabled because rubyfmt handles formatting.
+# rubyfmt is intended to supersede any and all other formatting styles,
+# so we disable the entire Layout department.
+Layout:
+  Enabled: false
+
+# rubyfmt always double-quotes strings
+Style/StringLiterals:
+  Enabled: false

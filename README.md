@@ -18,20 +18,7 @@ gem install rubocop-rubyfmt
 
 ## Usage
 
-### Standard Setup
-
-Add the following to your `.rubocop.yml`:
-
-```yaml
-inherit_gem:
-  rubocop-rubyfmt: [rubocop/rubocop.yml]
-```
-
-This will inherit from this gem's configuration and install [its custom lint rules](https://github.com/reese/rubocop-rubyfmt/blob/dbc797d769887a7d0d6dc85f9d9e08aea078ab0d/.rubocop.yml#L4).
-
-### Custom Lints Only, Please!
-
-If you only want to install the custom lints (see below for details on those), you can instead add `rubocop-rubyfmt` to your plugins (and _don't_ use `inherit_gem`):
+Add the plugin to your `.rubocop.yml`:
 
 ```yaml
 plugins:
