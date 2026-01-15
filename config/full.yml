@@ -1,0 +1,7 @@
+# `rubyfmt` has no preference on block delimiters
+Style/BlockDelimiters:
+  Enabled: false
+
+# `rubyfmt` has no preference for `lambda { }` or `-> () { }`
+Style/Lambda:
+  Enabled: false

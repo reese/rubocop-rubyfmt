@@ -80,8 +80,11 @@ Style/MultilineIfThen:
 Style/WhileUntilDo:
   Enabled: false
 
-# Lambda args always use parentheses
+# Lambda parameters always use parentheses when present
+# and are removed when not
 Style/StabbyLambdaParentheses:
+  Enabled: false
+Style/EmptyLambdaParameter:
   Enabled: false
 
 # Parens are always used for method defs with parameters
