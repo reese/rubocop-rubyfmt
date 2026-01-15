@@ -8,6 +8,8 @@ gemspec
 group :development do
   gem "rake", "~> 13.0"
   gem "rspec"
-  gem "rubocop", ">= 1.72.2"
+  gem "rubocop"
+  gem "rubocop-rake"
+  gem "rubocop-rspec"
   gem "ruby-lsp-rubyfmt-formatter"
 end

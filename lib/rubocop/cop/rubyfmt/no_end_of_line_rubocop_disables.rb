@@ -18,6 +18,7 @@ module RuboCop
       #   appropriately wrap the offending code.
       #
       #
+      # rubocop:disable Lint/RedundantCopDisableDirective
       # ```ruby
       # # good
       # # rubocop:disable Style/ExampleCop
@@ -27,6 +28,7 @@ module RuboCop
       # # bad
       # bad_call! # rubocop:disable Style/ExampleCop
       # ````
+      # rubocop:enable Lint/RedundantCopDisableDirective
       #
       class NoEndOfLineRubocopDisables < Base
         extend AutoCorrector
@@ -57,7 +59,7 @@ module RuboCop
         end
 
         private def autocorrect(corrector, comment)
-          line_number = comment.loc.expression.line
+          line_number = comment.source_range.line
           line = processed_source.lines[line_number - 1]
 
           # Extract the disable directive
@@ -68,15 +70,15 @@ module RuboCop
           whitespace_before_comment_length = line_without_comment.length - line_without_comment.rstrip.length
 
           # Create a range that includes the whitespace before the comment
-          comment_with_leading_space_range = if whitespace_before_comment_length > 0
+          comment_with_leading_space_range = if whitespace_before_comment_length.positive?
             range_with_leading_space = Parser::Source::Range.new(
-              comment.loc.expression.source_buffer,
-              comment.loc.expression.begin_pos - whitespace_before_comment_length,
-              comment.loc.expression.end_pos
+              comment.source_range.source_buffer,
+              comment.source_range.begin_pos - whitespace_before_comment_length,
+              comment.source_range.end_pos
             )
             range_with_leading_space
           else
-            comment.loc.expression
+            comment.source_range
           end
 
           # Remove the end-of-line comment with its leading whitespace

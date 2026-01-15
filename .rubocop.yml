@@ -1,8 +1,11 @@
 plugins:
   - rubocop-internal_affairs
   - rubocop-rubyfmt
+  - rubocop-rake
+  - rubocop-rspec
 
 AllCops:
+  NewCops: enable
   Exclude:
   <% `git status --ignored --porcelain`.lines.grep(/^!! /).each do |path| %>
     - <%= path.sub(/^!! /, '').sub(/\/$/, '/**/*') %>
@@ -26,4 +29,9 @@ Metrics/PerceivedComplexity:
   Enabled: false
 
 Style/IfUnlessModifier:
+  Enabled: false
+Style/AccessModifierDeclarations:
+  Enabled: false
+
+RSpec/ExampleLength:
   Enabled: false
