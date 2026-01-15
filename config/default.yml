@@ -10,6 +10,99 @@ Rubyfmt/NoEndOfLineRubocopDisables:
 Layout:
   Enabled: false
 
-# rubyfmt always double-quotes strings
+# Strings are always double-quoted
 Style/StringLiterals:
+  Enabled: false
+Style/StringLiteralsInInterpolation:
+  Enabled: false
+
+# %Q/%q/% literals are transformed into quoted strings
+Style/PercentQLiterals:
+  Enabled: false
+Style/RedundantPercentQ:
+  Enabled: false
+Style/BarePercentLiterals:
+  Enabled: false
+
+# Methods always render their `end` keyword on a new line
+Style/EmptyMethod:
+  Enabled: false
+
+# `rubyfmt` doesn't make a preference, neither should you
+Style/BlockDelimiters:
+  Enabled: false
+
+# Trailing commas are always removed
+Style/TrailingCommaInArguments:
+  Enabled: false
+Style/TrailingCommaInHashLiteral:
+  Enabled: false
+Style/TrailingCommaInArrayLiteral:
+  Enabled: false
+
+# These arguments will be wrapped in parens, so they won't be ambiguous
+Lint/AmbiguousRegexpLiteral:
+  Enabled: false
+Lint/AmbiguousBlockAssociation:
+  Enabled: false
+
+# Ternaries are always rendered on a single line
+Style/MultilineTernaryOperator:
+  Enabled: false
+
+# Comments are always put on their own line, so this is redundant
+Style/CommentedKeyword:
+  Enabled: false
+
+# Character literals are converted to quoted strings
+Style/CharacterLiteral:
+  Enabled: false
+
+# Statements on the same line are always split to multiple lines
+Style/Semicolon:
+  Enabled: false
+
+# Methods with end keywords (even empty ones) are always on multiple lines
+Style/SingleLineMethods:
+  Enabled: false
+
+# `then` is never used
+Style/WhenThen:
+  Enabled: false
+Style/MultilineWhenThen:
+  Enabled: false
+Style/InPatternThen:
+  Enabled: false
+Style/MultilineIfThen:
+  Enabled: false
+
+# `do` in loops is never used
+Style/WhileUntilDo:
+  Enabled: false
+
+# Lambda args always use parentheses
+Style/StabbyLambdaParentheses:
+  Enabled: false
+
+# Parens are always used for method defs with parameters
+# and always stripped without parameters
+Style/MethodDefParentheses:
+  Enabled: false
+Style/DefWithParentheses:
+  Enabled: false
+
+# Percent arrays always use `[]` delimiters
+Style/PercentLiteralDelimiters:
+  Enabled: false
+
+# Calls with args inside other callers will always use parens
+Style/NestedParenthesizedCalls:
+  Enabled: false
+
+# Statements on the same line as `else` will always be moved
+Lint/ElseLayout:
+  Enabled: false
+
+# `if` modifiers with multiline bodies will convert to a multiline if block
+Style/MultilineIfModifier:
   Enabled: false
