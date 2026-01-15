@@ -49,6 +49,24 @@ Alternatively, you can wrap the whole expression with comments on multiple lines
 
 > [!TIP]
 > If you're adopting `rubyfmt` for the first time and want to codemod your rubocop disables, you can run _only_ this cop with `bundle exec rubocop --autocorrect --only Rubyfmt/NoEndOfLineRubocopDisables`
+>
+> Note that the autocorrect for this lint is best-effort and may require manual fixups. That said, it'll only move comments and should be safe, and RuboCop will notify you of any new failures.
+
+## Disabled Lints
+
+All the disabled lints along with the rationale for disabling them is listed in [`config/default.yml`](https://github.com/reese/rubocop-rubyfmt/blob/main/config/default.yml).
+
+The goal of these lints is not to prevent _any_ violations, but to prevent lint violations _specific to `rubyfmt`_. Other lint violations may still occur after formatting: for example, a method body may get longer and cause a `Metrics/MethodLength` violation. Such violations are not covered by `rubocop-rubyfmt`.
+
+### Optional Lint Disables
+
+There are also some matters of taste (especially in RuboCop's `Style` department) that `rubyfmt` doesn't automatically enforce but which may be modified by `rubyfmt` and cause failures. For example, `rubyfmt` does not currently enforce that multiline blocks must use `do`/`end`. For those, who wish to leave formatting decisions entirely up to `rubyfmt` and not worry about such things, there's a "full" config that more aggressively disables such lints, which you can include in your RuboCop config:
+
+```yaml
+inherit_gem:
+  rubocop-rubyfmt:
+    - config/full.yml
+```
 
 ## Development
 
