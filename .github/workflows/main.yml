@@ -30,3 +30,13 @@ jobs:
           bundler-cache: true
       - name: Run tests
         run: bundle exec rake
+
+  rubyfmt:
+    runs-on: macos-latest
+    name: Rubyfmt
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install rubyfmt
+        run: brew install rubyfmt
+      - name: Check formatting
+        run: rubyfmt --check .
