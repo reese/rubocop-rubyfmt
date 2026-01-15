@@ -60,7 +60,7 @@ The goal of these lints is not to prevent _any_ violations, but to prevent lint 
 
 ### Optional Lint Disables
 
-There are also some matters of taste (especially in RuboCop's `Style` department) that `rubyfmt` doesn't automatically enforce but which may be modified by `rubyfmt` and cause failures. For example, `rubyfmt` does not currently enforce that multiline blocks must use `do`/`end`. For those, who wish to leave formatting decisions entirely up to `rubyfmt` and not worry about such things, there's a "full" config that more aggressively disables such lints, which you can include in your RuboCop config:
+There are also some matters of taste (especially in RuboCop's `Style` department) that `rubyfmt` doesn't automatically enforce but which may be modified by `rubyfmt` and cause failures. For example, `rubyfmt` does not currently enforce that multiline blocks must use `do`/`end`. For those who wish to leave formatting decisions entirely up to `rubyfmt` and not worry about them, there's a "full" config that more aggressively disables such lints, which you can include in your RuboCop config:
 
 ```yaml
 inherit_gem:
