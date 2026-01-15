@@ -68,6 +68,8 @@ inherit_gem:
     - config/full.yml
 ```
 
+You may also wish to instead [read the file](https://github.com/reese/rubocop-rubyfmt/blob/main/config/full.yml) and pick-and-choose which ones to disable.
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
