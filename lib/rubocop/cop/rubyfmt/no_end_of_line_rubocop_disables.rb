@@ -34,7 +34,7 @@ module RuboCop
         extend AutoCorrector
 
         MSG = "Use multiline rubocop directives instead of end-of-line comments."
-        DISABLE_PATTERN = /# rubocop:(disable|todo) .*/.freeze
+        DISABLE_PATTERN = /# rubocop:(disable|todo) .*/
 
         def on_new_investigation
           processed_source.comments.each do |comment|
