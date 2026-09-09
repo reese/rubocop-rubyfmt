@@ -104,6 +104,11 @@ Style/PercentLiteralDelimiters:
 Style/NestedParenthesizedCalls:
   Enabled: false
 
+# A no-arg call gets `()` when a local variable shares its name, so that the call
+# stays a call: `foo = self.foo()`
+Style/MethodCallWithoutArgsParentheses:
+  Enabled: false
+
 # Statements on the same line as `else` will always be moved
 Lint/ElseLayout:
   Enabled: false
